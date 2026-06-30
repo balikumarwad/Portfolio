@@ -1,10 +1,41 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
+  --background: #fafafa;
+  --foreground: #18181b;
+  --accent: #4f46e5;
+  --accent-secondary: #7c3aed;
+  --muted-text: #52525b;
+  --border-color: rgba(0, 0, 0, 0.08);
+  --card-bg: #ffffff;
+  --card-border: rgba(0, 0, 0, 0.06);
+  --grid-line-color: rgba(0, 0, 0, 0.02);
+  
+  --hero-glow-primary: rgba(79, 70, 229, 0.04);
+  --hero-glow-secondary: rgba(124, 58, 237, 0.02);
+  --scrollbar-track: #fafafa;
+  --scrollbar-thumb: #d4d4d8;
+  --selection-bg: rgba(79, 70, 229, 0.12);
+}
+
+.dark {
   --background: #09090b;
-  --foreground: #f4f4f5;
+  --foreground: #fafafa;
   --accent: #6366f1;
   --accent-secondary: #8b5cf6;
+  --muted-text: #a1a1aa;
+  --border-color: rgba(255, 255, 255, 0.08);
+  --card-bg: #09090b;
+  --card-border: rgba(255, 255, 255, 0.06);
+  --grid-line-color: rgba(255, 255, 255, 0.015);
+  
+  --hero-glow-primary: rgba(99, 102, 241, 0.09);
+  --hero-glow-secondary: rgba(139, 92, 246, 0.05);
+  --scrollbar-track: #09090b;
+  --scrollbar-thumb: #27272a;
+  --selection-bg: rgba(99, 102, 241, 0.25);
 }
 
 @theme inline {
@@ -17,15 +48,15 @@
   
   --color-accent: var(--accent);
   --color-accent-secondary: var(--accent-secondary);
-  --color-dark-bg: #09090b;
-  --color-card-bg: #09090b;
-  --color-card-border: #18181b;
-  --color-muted-text: #a1a1aa;
+  --color-dark-bg: var(--background);
+  --color-card-bg: var(--card-bg);
+  --color-card-border: var(--card-border);
+  --color-muted-text: var(--muted-text);
 }
 
 ::selection {
-  background-color: rgba(99, 102, 241, 0.25);
-  color: #ffffff;
+  background-color: var(--selection-bg);
+  color: var(--color-foreground);
 }
 
 /* Custom Scrollbar */
@@ -33,10 +64,10 @@
   width: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #030303;
+  background: var(--scrollbar-track);
 }
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
+  background: var(--scrollbar-thumb);
   border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
@@ -48,6 +79,7 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans);
   overflow-x: hidden;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 /* Smooth Scrolling */
@@ -59,7 +91,7 @@ html {
 .spotlight {
   background: radial-gradient(
     600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(99, 102, 241, 0.08),
+    var(--hero-glow-primary),
     transparent 80%
   );
 }
@@ -67,7 +99,7 @@ html {
 .spotlight-secondary {
   background: radial-gradient(
     800px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-    rgba(139, 92, 246, 0.04),
+    var(--hero-glow-secondary),
     transparent 70%
   );
 }
@@ -76,20 +108,20 @@ html {
 .grid-bg {
   background-size: 50px 50px;
   background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+    linear-gradient(to right, var(--grid-line-color) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid-line-color) 1px, transparent 1px);
 }
 
 /* Editorial line highlights */
 .editorial-border-b {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--border-color);
 }
 .editorial-border-r {
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  border-right: 1px solid var(--border-color);
 }
 .editorial-border-l {
-  border-left: 1px solid rgba(255, 255, 255, 0.08);
+  border-left: 1px solid var(--border-color);
 }
 .editorial-border-t {
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid var(--border-color);
 }

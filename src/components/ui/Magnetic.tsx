@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useRef, useState } from "react";
-import { motion } from "framer-motion";
+import React, { useRef, useState, useEffect } from "react";
+import { motion, useReducedMotion } from "framer-motion";
 
 interface MagneticProps {
   children: React.ReactElement;
@@ -12,8 +12,15 @@ interface MagneticProps {
 export default function Magnetic({ children, range = 70, strength = 0.4 }: MagneticProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
+  const shouldReduceMotion = useReducedMotion();
+  const [isHoverable, setIsHoverable] = useState(false);
+
+  useEffect(() => {
+    setIsHoverable(window.matchMedia("(hover: hover)").matches);
+  }, []);
 
   const handleMouseMove = (e: React.MouseEvent) => {
+    if (shouldReduceMotion || !isHoverable) return;
     if (!ref.current) return;
     const { clientX, clientY } = e;
     const { left, top, width, height } = ref.current.getBoundingClientRect();
@@ -25,7 +32,6 @@ export default function Magnetic({ children, range = 70, strength = 0.4 }: Magne
     const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
 
     if (distance < range) {
-      // Pull element towards mouse with dynamic spring strength
       setPosition({ x: distanceX * strength, y: distanceY * strength });
     } else {
       setPosition({ x: 0, y: 0 });
@@ -37,6 +43,10 @@ export default function Magnetic({ children, range = 70, strength = 0.4 }: Magne
   };
 
   const { x, y } = position;
+
+  if (shouldReduceMotion || !isHoverable) {
+    return <div className="inline-block">{children}</div>;
+  }
 
   return (
     <div
